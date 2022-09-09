@@ -1,21 +1,21 @@
-from typing import List
+from typing import List, Optional
 from fastapi import HTTPException
 from starlette import status
 
 from models.models_user import User
 from service.service_prod import ServiceProduct
-from models.models_product import Product, ProductBase, ProductRegister
+from models.models_product import Product, ProductBase
 
 
 class ProductManager:
     @staticmethod
-    async def get_all(skip: int, limit: int) -> List[Product] | None:
+    async def get_all(skip: int, limit: int) -> Optional[List[Product]]:
         products = await ServiceProduct.get_all(skip=skip, limit=limit)
         if products:
             return [Product(**elem) for elem in products]
 
     @staticmethod
-    async def get_one(product_id: int) -> Product | None:
+    async def get_one(product_id: int) -> Optional[Product]:
         product = await ServiceProduct.get_one(product_id=product_id)
         if not product:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product doesn't exist")
@@ -35,7 +35,7 @@ class ProductManager:
         await ServiceProduct.delete(product_id=product_id)
 
     @staticmethod
-    async def create(product: ProductBase, user: User):
+    async def create(product: ProductBase, user_id: int):
         new_product = product.dict(exclude_defaults=True, exclude_none=True)
         if set(new_product.keys()) != set(ProductBase.__fields__):
             raise HTTPException(
@@ -43,4 +43,4 @@ class ProductManager:
                 detail=f'fields: {", " .join(ProductBase.__fields__).upper()} are required'
             )
 
-        await ServiceProduct.create(product=ProductRegister(**product.__dict__, user_id=user.id))
+        await ServiceProduct.create(product=product, user_id=user_id)

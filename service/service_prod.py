@@ -4,7 +4,7 @@ from sqlalchemy import select, insert, delete, update
 
 from database.tables import product_table
 from database.db import database as db
-from models.models_product import ProductRegister, ProductBase
+from models.models_product import ProductBase
 
 
 class ServiceProduct:
@@ -19,8 +19,10 @@ class ServiceProduct:
         return await db.fetch_one(query)
 
     @staticmethod
-    async def create(product: ProductRegister):
-        query = insert(product_table).values(**product.__dict__)
+    async def create(product: ProductBase, user_id: int):
+        product_dict = product.__dict__
+        product_dict['user_id'] = user_id
+        query = insert(product_table).values(**product_dict)
         await db.execute(query)
 
     @staticmethod

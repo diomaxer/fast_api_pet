@@ -1,11 +1,13 @@
+from typing import Optional
+
 from fastapi import HTTPException
 from pydantic import BaseModel, validator
 from starlette import status
 
 
 class ProductBase(BaseModel):
-    name: str | None
-    price: float | None
+    name:  Optional[str]
+    price:  Optional[float]
 
     @validator('price')
     def price_mast_be_number(cls, v):
@@ -17,11 +19,10 @@ class ProductBase(BaseModel):
         return v
 
 
-class ProductRegister(BaseModel):
-    name: str
-    price: float
+class ProductInfo(BaseModel):
+    id: int
     user_id: int
 
 
-class Product(ProductRegister):
-    id: int
+class Product(ProductBase, ProductInfo):
+    pass
