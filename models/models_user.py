@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException
 from pydantic import BaseModel, validator
 from starlette import status
@@ -9,7 +11,7 @@ class AuthUser(BaseModel):
 
 
 class RegisterUser(AuthUser):
-    email: str | None = None
+    email:  Optional[str] = None
 
     @validator('password')
     def check_password(cls, v):
@@ -21,7 +23,7 @@ class RegisterUser(AuthUser):
 class User(BaseModel):
     id: int
     username: str
-    email: str | None = None
+    email:  Optional[str] = None
 
 
 class UserInDb(User):

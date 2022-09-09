@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import select, insert, or_
 from database.db import database as db
 from database.tables import users_tables
@@ -6,7 +8,7 @@ from models.models_user import RegisterUser
 
 class UserService:
     @staticmethod
-    async def get_user(username: str, email: str | None = None):
+    async def get_user(username: str, email:  Optional[str] = None):
         query = select(users_tables).where(
             users_tables.c.username == username
         )

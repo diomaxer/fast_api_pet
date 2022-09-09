@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -11,12 +12,13 @@ from service.service_user import UserService
 
 SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 ALGORITHM = os.getenv('JWT_ALGORITHM')
+print(ALGORITHM)
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/users/token")
 
 
-async def create_access_token(data: dict, expires_delta: timedelta | None = None):
+async def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
