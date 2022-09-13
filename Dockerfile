@@ -1,9 +1,7 @@
-FROM python:3.10
+FROM python:3.8
 WORKDIR /code
 COPY requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY . /code
 
-#CMD echo ass
-#CMD sleep 5 && alembic upgrade head
-CMD uivcorn main:app --reload
+CMD sleep 5 && uvicorn main:app --host 0.0.0.0 --port 5000
