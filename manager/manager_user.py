@@ -16,7 +16,7 @@ class UserManager:
                 detail="Incorrect username or password",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token_expires = timedelta(minutes=AuthConfig.ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = await create_access_token(
             data={"sub": user.username}, expires_delta=access_token_expires
         )

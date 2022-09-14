@@ -1,9 +1,9 @@
 import databases
 
-from config import DatabaseConfig
+from config import HerokuConfig
 from sqlalchemy import create_engine, MetaData
 
-engine = create_engine(DatabaseConfig.DB_URL)
+engine = create_engine(HerokuConfig.DATABASE_URL)
 metadata = MetaData()
 
-database = databases.Database(DatabaseConfig.DB_URL)
+database = databases.Database(HerokuConfig.DATABASE_URL)

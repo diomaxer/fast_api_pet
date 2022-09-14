@@ -6,7 +6,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from config import DatabaseConfig
+from config import HerokuConfig
 from database.tables import metadata
 
 # this is the Alembic Config object, which provides
@@ -29,7 +29,7 @@ target_metadata = metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-config.set_main_option('sqlalchemy.url', DatabaseConfig.DB_URL)
+config.set_main_option('sqlalchemy.url', HerokuConfig.DATABASE_URL)
 
 
 def run_migrations_offline() -> None:
