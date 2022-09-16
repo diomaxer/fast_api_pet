@@ -3,7 +3,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends
 
 from manager.manager_token import get_current_user
-from models.models_product import Product, ProductBase
+from models.models_product import Product, ProductBase, BuyProduct
 from models.models_user import User
 from manager.manager_prodcut import ProductManager
 
@@ -30,6 +30,11 @@ async def update_product(product_id: int, new_product: ProductBase, user: User =
     return await ProductManager.update(product_id=product_id, new_product=new_product, user_id=user.id)
 
 
-@router.delete('/{product_id}', response_model = None)
+@router.delete('/{product_id}', response_model=None)
 async def delete_product(product_id: int,  user: User = Depends(get_current_user)):
     return await ProductManager.delete(product_id=product_id, user_id=user.id)
+
+
+@router.post('/{product_id}', response_model=None)
+async def buy_product(product_id: int, buy: BuyProduct, user: User = Depends(get_current_user)):
+    return await ProductManager.buy(product_id=product_id, amount=buy.amount, user_id=user.id)

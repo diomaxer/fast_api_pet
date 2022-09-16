@@ -10,7 +10,7 @@ from models.models_token import TokenData
 from service.service_user import UserService
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/users/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/user/token")
 
 
 async def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):

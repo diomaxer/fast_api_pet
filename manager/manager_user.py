@@ -2,7 +2,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from hash_data import get_password_hash, verify_password
 from manager.manager_token import *
-from models.models_user import RegisterUser
+from models.models_user import RegisterUser, User, Order
 from service.service_user import UserService
 
 
@@ -10,6 +10,7 @@ class UserManager:
     @staticmethod
     async def auth_user(form_data: OAuth2PasswordRequestForm = Depends()):
         user = await UserService.get_user(username=form_data.username)
+        print(user)
         if not user or not verify_password(form_data.password, user.hashed_password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -36,3 +37,16 @@ class UserManager:
             else:
                 raise HTTPException(status_code=400, detail="Email already registered")
 
+    @staticmethod
+    async def get_user(username: str):
+        user = await UserService.get_user(username=username)
+        return User(**user)
+
+    @staticmethod
+    async def top_up(user_id: int, value: float):
+        await UserService.top_up(user_id=user_id, value=value)
+
+    # @staticmethod
+    # async def user_orders(user_id: int):
+    #     orders = await UserService.get_user_orders(user_id=user_id)
+    #     return [Order(**elem) for elem in orders]

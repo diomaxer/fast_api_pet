@@ -8,6 +8,7 @@ from starlette import status
 class ProductBase(BaseModel):
     name:  Optional[str]
     price:  Optional[float]
+    amount: Optional[int]
 
     @validator('price')
     def price_mast_be_number(cls, v):
@@ -18,6 +19,12 @@ class ProductBase(BaseModel):
             )
         return v
 
+    @validator('amount')
+    def amount_check(cls, v):
+        if v < 0:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="amount can't be negative")
+        return v
+
 
 class ProductInfo(BaseModel):
     id: int
@@ -26,3 +33,7 @@ class ProductInfo(BaseModel):
 
 class Product(ProductBase, ProductInfo):
     pass
+
+
+class BuyProduct(BaseModel):
+    amount: int

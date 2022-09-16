@@ -3,7 +3,7 @@ from sqlalchemy import Table, Column, Integer, String, Float, Boolean, ForeignKe
 from database.db import new_metadata
 
 
-users_tables = Table(
+user_table = Table(
     'users',
     new_metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
@@ -29,5 +29,6 @@ order_table = Table(
     new_metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('product_id', Integer, ForeignKey('product.id'), nullable=False),
+    Column('amount', Integer, default=1),
     Column('date', Date)
 )

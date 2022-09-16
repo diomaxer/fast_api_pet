@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 
 from fastapi import HTTPException
@@ -24,7 +25,26 @@ class User(BaseModel):
     id: int
     username: str
     email:  Optional[str] = None
+    sum: float = 0
 
 
 class UserInDb(User):
     hashed_password: str
+
+
+class UserSum(BaseModel):
+    value: float = 0
+
+    @validator('value')
+    def check_value(cls, v):
+        if v < 0:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Sum can't be negative")
+        return round(v, 2)
+
+
+class Order(BaseModel):
+    id: int
+    title: str
+    price: int
+    amount: int
+    date: datetime.date
