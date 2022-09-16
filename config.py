@@ -3,6 +3,7 @@ import os
 
 class HerokuConfig:
     DATABASE_URL = os.getenv("DATABASE_URL").replace('postgres', 'postgresql')
+    # DATABASE_URL = os.getenv("DATABASE_URL2")
 
 
 class AuthConfig:
