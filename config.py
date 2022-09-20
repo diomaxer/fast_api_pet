@@ -1,8 +1,11 @@
 import os
+import dotenv
 
+
+dotenv.load_dotenv()
 
 class HerokuConfig:
-    DATABASE_URL = os.getenv("DATABASE_URL").replace('postgres', 'postgresql')
+    DATABASE_URL = os.getenv("DATABASE_URL")
     # DATABASE_URL = os.getenv("DATABASE_URL2")
 
 
