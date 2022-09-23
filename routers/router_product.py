@@ -38,5 +38,5 @@ async def delete_product(product_id: int,  user: User = Depends(get_current_user
 
 
 @router.post('/{product_id}', response_model=None)
-async def buy(product_id: int, buy: BuyProduct, user: User = Depends(get_current_user)):
-    return await ProductManager.buy(product_id=product_id, amount=buy.amount, user_id=user.id)
+async def buy(product_id: int, buy: BuyProduct, user: User = Depends(get_current_user), session: Session = Depends(get_db)):
+    return await ProductManager.buy(product_id=product_id, amount=buy.amount, user_id=user.id, session=session)

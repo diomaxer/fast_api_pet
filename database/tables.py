@@ -10,8 +10,10 @@ user_table = Table(
     Column('username', String(30), unique=True, nullable=False),
     Column('email', String(80), unique=True),
     Column('hashed_password', String(100), nullable=False),
-    Column('is_active', Boolean, default=False, nullable=False),
-    Column('sum', Float, default=0, nullable=False)
+    Column('sum', Float, default=0, nullable=False),
+    Column('is_stuff', Boolean, default=False, nullable=False),
+    Column('is_admin', Boolean, default=False, nullable=False),
+    Column('is_active', Boolean, default=False, nullable=False)
 )
 
 product_table = Table(

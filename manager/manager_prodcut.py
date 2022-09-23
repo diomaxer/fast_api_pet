@@ -47,5 +47,5 @@ class ProductManager:
         await ServiceProduct.create(product=product, user_id=user_id, session=session)
 
     @staticmethod
-    async def buy(product_id: int, amount: int, user_id: int):
-        await ServiceProduct.buy(product_id=product_id, amount=amount, user_id=user_id)
+    async def buy(product_id: int, amount: int, user_id: int, session: Session):
+        await ServiceProduct.buy(product_id=product_id, amount=amount, user_id=user_id, session=session)

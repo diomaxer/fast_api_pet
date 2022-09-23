@@ -48,13 +48,16 @@ class ServiceProduct:
         session.commit()
 
     @staticmethod
-    async def buy(product_id: int, amount: int, user_id: int):
+    async def buy(product_id: int, amount: int, user_id: int, session: Session):
         with engine.connect() as conn:
             # Вычесть из product
-            product_query = update(product_table).\
-                values(amount=product_table.c.amount - amount).\
-                where(product_table.c.id == product_id)
+            session.query(product_table).where(
+                product_table.c.id==product_id
+            ).update(
+                {product_table.c.amount: product_table.c.amount - amount}
+            )
             # Вычесть из user.sum
+
             # user_query = update(user_table).values(sum=user_table.sum - )
             # Добавить order
             order_query = insert(order_table).values(
@@ -62,6 +65,6 @@ class ServiceProduct:
                 amount=amount,
                 date=datetime.date.today()
             )
-            conn.execute(product_query)
-            conn.execute(order_query)
+            # conn.execute(product_query)
+            # conn.execute(order_query)
 

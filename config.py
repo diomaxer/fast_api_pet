@@ -1,8 +1,8 @@
 import os
-import dotenv
+# import dotenv
 
 
-dotenv.load_dotenv()
+# dotenv.load_dotenv()
 
 class HerokuConfig:
     DATABASE_URL = os.getenv("DATABASE_URL")
