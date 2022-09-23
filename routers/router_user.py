@@ -46,6 +46,8 @@ async def user_info(user: User = Depends(get_current_user), session: Session = D
 async def top_up(user_sum: UserSum, user: User = Depends(get_current_user), session: Session = Depends(get_db)):
     return await UserManager.top_up(user_id=user.id, value=user_sum.value, session=session)
 
+
+
 # @router.get(
 #     path='/orders',
 #     description='Users orders',

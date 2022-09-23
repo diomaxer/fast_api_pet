@@ -1,4 +1,6 @@
 from typing import Optional
+
+import sqlalchemy.engine.row
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -45,4 +47,16 @@ async def get_current_user(session: Session = Depends(get_db), token: str = Depe
     user = await UserService.get_user(username=token_data.username, session=session)
     if user is None:
         raise credentials_exception
+    return user
+
+
+async def get_admin_user(user: sqlalchemy.engine.row.Row = Depends(get_current_user)):
+    admin_exception = HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="You not admin",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    print(type(user))
+    if not user['is_admin']:
+        raise admin_exception
     return user

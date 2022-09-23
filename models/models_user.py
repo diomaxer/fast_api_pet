@@ -28,6 +28,12 @@ class User(BaseModel):
     sum: float = 0
 
 
+class UserFull(User):
+    is_admin: bool
+    is_stuff: bool
+    is_active: bool
+
+
 class UserInDb(User):
     hashed_password: str
 
