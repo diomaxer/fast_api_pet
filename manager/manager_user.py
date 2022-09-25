@@ -43,6 +43,10 @@ class UserManager:
         return User(**user)
 
     @staticmethod
+    async def delete_user(user: User, session: Session):
+        await UserService.delete_user(user_id=user.id, session=session)
+
+    @staticmethod
     async def top_up(user_id: int, value: float, session: Session):
         await UserService.top_up(user_id=user_id, value=value, session=session)
 

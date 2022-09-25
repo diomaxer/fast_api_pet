@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from database.db import get_db
-from manager.manager_token import get_admin_user
+from manager.manager_token import get_admin_user, get_current_user
 from models.models_product import Product, BuyProduct
 from models.models_user import User
 from manager.manager_prodcut import ProductManager
@@ -23,6 +23,6 @@ async def get_one_product(product_id: int = 0, session: Session = Depends(get_db
 
 
 @router.post('/{product_id}', response_model=None)
-async def buy(product_id: int, buy: BuyProduct, user: User = Depends(get_admin_user), session: Session = Depends(get_db)):
+async def buy(product_id: int, buy: BuyProduct, user: User = Depends(get_current_user), session: Session = Depends(get_db)):
     return await ProductManager.buy(product_id=product_id, amount=buy.amount, user_id=user.id, session=session)
 

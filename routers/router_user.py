@@ -38,6 +38,15 @@ async def user_info(user: User = Depends(get_current_user), session: Session = D
     return await UserManager.get_user(username=user.username, session=session)
 
 
+@router.delete(
+    path='/info',
+    description='Delete account',
+    status_code=status.HTTP_200_OK
+)
+async def delete_user(user: User = Depends(get_current_user), session: Session = Depends(get_db)):
+    return await UserManager.delete_user(user=user, session=session)
+
+
 @router.post(
     path='/top_up',
     description='Top up your account',

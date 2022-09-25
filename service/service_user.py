@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, insert, or_
+from sqlalchemy import select, insert, or_, delete
 from sqlalchemy.orm import Session
 
 from database.tables import user_table
@@ -39,6 +39,15 @@ class UserService:
         session.query(user_table).where(user_table.c.id == user_id).update(
             {user_table.c.sum: user_table.c.sum + value}
         )
+        session.commit()
+
+
+    @staticmethod
+    async def delete_user(user_id: int, session: Session):
+        # session.delete(user_table).where(user_table.c.id == user_id)
+        query = delete(user_table).where(user_table.c.id == user_id)
+        # session.commit()
+        session.execute(query)
         session.commit()
 
     # @staticmethod
