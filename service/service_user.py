@@ -44,9 +44,7 @@ class UserService:
 
     @staticmethod
     async def delete_user(user_id: int, session: Session):
-        # session.delete(user_table).where(user_table.c.id == user_id)
         query = delete(user_table).where(user_table.c.id == user_id)
-        # session.commit()
         session.execute(query)
         session.commit()
 
