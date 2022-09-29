@@ -1,12 +1,12 @@
 import os
-# import dotenv
+import dotenv
 
 
-# dotenv.load_dotenv()
+dotenv.load_dotenv()
 
 class HerokuConfig:
-    DATABASE_URL = os.getenv("DATABASE_URL")
-    # DATABASE_URL = os.getenv("DATABASE_URL2")
+    # DATABASE_URL = os.getenv("DATABASE_URL")
+    DATABASE_URL = os.getenv("DATABASE_URL2")
 
 
 class AuthConfig:

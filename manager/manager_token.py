@@ -56,7 +56,6 @@ async def get_admin_user(user: sqlalchemy.engine.row.Row = Depends(get_current_u
         detail="You not admin",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    print(type(user))
     if not user['is_admin']:
         raise admin_exception
     return user

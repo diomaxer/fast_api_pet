@@ -14,14 +14,14 @@ router = APIRouter()
 
 @router.post('/create/', response_model=None)
 async def create_product(product: ProductBase, user: User = Depends(get_admin_user), session: Session = Depends(get_db)):
-    return await ProductManager.create(product=product, user_id=user.id, session=session)
+    return await ProductManager.create(product=product, session=session)
 
 
 @router.put('/{product_id}', response_model=Optional[Product])
 async def update_product(product_id: int, new_product: ProductBase, user: User = Depends(get_admin_user), session: Session = Depends(get_db)):
-    return await ProductManager.update(product_id=product_id, new_product=new_product, user_id=user.id, session=session)
+    return await ProductManager.update(product_id=product_id, new_product=new_product, session=session)
 
 
 @router.delete('/{product_id}', response_model=None)
 async def delete_product(product_id: int,  user: User = Depends(get_admin_user), session: Session = Depends(get_db)):
-    return await ProductManager.delete(product_id=product_id, user_id=user.id, session=session)
+    return await ProductManager.delete(product_id=product_id, session=session)

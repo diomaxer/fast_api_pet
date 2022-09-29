@@ -6,7 +6,7 @@ from starlette import status
 
 
 class ProductBase(BaseModel):
-    name:  Optional[str]
+    title:  Optional[str]
     price:  Optional[float]
     amount: Optional[int]
 
@@ -28,7 +28,6 @@ class ProductBase(BaseModel):
 
 class ProductInfo(BaseModel):
     id: int
-    user_id: int
 
 
 class Product(ProductBase, ProductInfo):

@@ -1,5 +1,5 @@
 from typing import Optional
-
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import select, insert, or_, delete
 from sqlalchemy.orm import Session
 
@@ -28,11 +28,22 @@ class UserService:
                 username=new_user.username,
                 hashed_password=new_user.password,
                 email=new_user.email,
-                is_active=False,
                 sum=2000
             )
-            session.execute(query)
-            session.commit()
+            try:
+                session.execute(query)
+                session.commit()
+            except IntegrityError as e:
+                session.rollback()
+                error = str(e.__dict__['orig'])
+                if 'users_username_key' in error:
+                    return 'username'
+                elif 'users_email_key' in error:
+                    return 'email'
+
+
+
+
 
     @staticmethod
     async def top_up(user_id: int, value: float, session: Session):

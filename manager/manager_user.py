@@ -25,17 +25,9 @@ class UserManager:
 
     @staticmethod
     async def create_user(new_user: RegisterUser, session: Session):
-        new_user.password = get_password_hash(new_user.password)
-        user = await UserService.get_user(username=new_user.username, email=new_user.email, session=session)
-        if not user:
-            await UserService.create_user(new_user=new_user, session=session)
-        elif len(user) == 2:
-            raise HTTPException(status_code=400, detail="Username and email already registered")
-        elif len(user) == 1:
-            if user[0].username == new_user.username:
-                raise HTTPException(status_code=400, detail="Username already registered")
-            else:
-                raise HTTPException(status_code=400, detail="Email already registered")
+        error = await UserService.create_user(new_user=new_user, session=session)
+        if error:
+            raise HTTPException(status_code=400, detail=f"{error} already taken")
 
     @staticmethod
     async def get_user(username: str, session: Session):

@@ -7,6 +7,7 @@ from alembic import context
 
 from config import HerokuConfig
 from database.tables import new_metadata
+# from database.tables import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,6 +22,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+
 target_metadata = new_metadata
 
 # other values from the config, defined by the needs of env.py,

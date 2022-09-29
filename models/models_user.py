@@ -29,9 +29,9 @@ class User(BaseModel):
 
 
 class UserFull(User):
-    is_admin: bool
-    is_stuff: bool
-    is_active: bool
+    is_admin: bool = False
+    is_stuff: bool = False
+    is_active: bool = False
 
 
 class UserInDb(User):
@@ -53,4 +53,3 @@ class Order(BaseModel):
     title: str
     price: int
     amount: int
-    date: datetime.date
