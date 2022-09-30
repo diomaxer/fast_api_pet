@@ -30,6 +30,7 @@ class ProductManager:
         valid_product = new_product.dict(exclude_defaults=True, exclude_none=True)
         if not valid_product:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="wrong field name")
+        await ServiceProduct.update(product_id=product_id, new_product=valid_product, session=session)
 
     @staticmethod
     async def delete(product_id: int, session: Session):
