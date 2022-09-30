@@ -1,6 +1,7 @@
 Backend for small shop site on FastAPI
 
 Options:
+
     Auth:
       Register user
       Auth user
