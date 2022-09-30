@@ -1,13 +1,8 @@
-import datetime
-
-from sqlalchemy import insert, delete, update
+from sqlalchemy import insert, delete
 from sqlalchemy.exc import IntegrityError
-from database.db import engine
 from database.tables import product_table, user_table, order_table
-from models.models_product import ProductBase
+from models.models_product import ProductBase, Product
 from sqlalchemy.orm import Session
-
-# from database.tables import Product
 
 
 class ServiceProduct:
@@ -28,7 +23,6 @@ class ServiceProduct:
         except IntegrityError as e:
             return 'title'
 
-
     @staticmethod
     async def delete(product_id: int, session: Session):
         query = delete(product_table).where(product_table.c.id == product_id)
@@ -45,23 +39,37 @@ class ServiceProduct:
         session.commit()
 
     @staticmethod
-    async def buy(product_id: int, amount: int, user_id: int, session: Session):
-        with engine.connect() as conn:
-            # Вычесть из product
+    async def buy(product: Product, amount: int, user_id: int, session: Session):
+        try:
+            # subtract the amount product
             session.query(product_table).where(
-                product_table.c.id==product_id
+                product_table.c.id == product.id
             ).update(
-                {product_table.c.amount: product_table.c.amount - amount}
+                {
+                    product_table.c.amount: product_table.c.amount - amount
+                }
             )
-            # Вычесть из user.sum
+            # subtract the sum from user
+            session.query(user_table).where(
+                user_table.c.id == user_id
+            ).update(
+                {
+                    user_table.c.sum: user_table.c.sum - amount * product.price,
 
-            # user_query = update(user_table).values(sum=user_table.sum - )
-            # Добавить order
-            order_query = insert(order_table).values(
-                product_id=product_id,
-                amount=amount,
-                date=datetime.date.today()
+                }
             )
-            # conn.execute(product_query)
-            # conn.execute(order_query)
+            # create order
+            create_order_stmt = insert(order_table).values(
+                {
+                    'product_id': product.id,
+                    'user_id': user_id,
+                    'amount': amount,
+                    'price': amount * product.price
+                }
+            )
+            session.execute(create_order_stmt)
+            session.commit()
 
+        except Exception as e:
+            print(e)
+            session.rollback()

@@ -7,7 +7,6 @@ from alembic import context
 
 from config import HerokuConfig
 from database.tables import new_metadata
-# from database.tables import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -32,6 +31,7 @@ target_metadata = new_metadata
 
 
 config.set_main_option('sqlalchemy.url', HerokuConfig.DATABASE_URL)
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

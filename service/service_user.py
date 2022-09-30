@@ -1,9 +1,10 @@
+from pprint import pprint
 from typing import Optional
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import select, insert, or_, delete
 from sqlalchemy.orm import Session
 
-from database.tables import user_table
+from database.tables import user_table, order_table, product_table
 from models.models_user import RegisterUser
 
 
@@ -24,26 +25,22 @@ class UserService:
 
     @staticmethod
     async def create_user(new_user: RegisterUser, session: Session):
-            query = insert(user_table).values(
-                username=new_user.username,
-                hashed_password=new_user.password,
-                email=new_user.email,
-                sum=2000
-            )
-            try:
-                session.execute(query)
-                session.commit()
-            except IntegrityError as e:
-                session.rollback()
-                error = str(e.__dict__['orig'])
-                if 'users_username_key' in error:
-                    return 'username'
-                elif 'users_email_key' in error:
-                    return 'email'
-
-
-
-
+        query = insert(user_table).values(
+            username=new_user.username,
+            hashed_password=new_user.password,
+            email=new_user.email,
+            sum=2000
+        )
+        try:
+            session.execute(query)
+            session.commit()
+        except IntegrityError as e:
+            session.rollback()
+            error = str(e.__dict__['orig'])
+            if 'users_username_key' in error:
+                return 'username'
+            elif 'users_email_key' in error:
+                return 'email'
 
     @staticmethod
     async def top_up(user_id: int, value: float, session: Session):
@@ -52,16 +49,22 @@ class UserService:
         )
         session.commit()
 
-
     @staticmethod
     async def delete_user(user_id: int, session: Session):
         query = delete(user_table).where(user_table.c.id == user_id)
         session.execute(query)
         session.commit()
 
-    # @staticmethod
-    # async def get_user_orders(user_id: int):
-    #     with engine.connect() as conn:
-    #         query = select(order_table).where(order_table.c.user_id == user_id)
-    #         result = conn.execute(query)
-    #         return result
+    @staticmethod
+    async def get_user_orders(user_id: int, session: Session):
+        return session.query(
+            order_table.c.id,
+            order_table.c.date,
+            order_table.c.amount,
+            order_table.c.price,
+            product_table.c.title,
+        ).join(
+            product_table
+        ).filter(
+            order_table.c.user_id == user_id
+        ).all()

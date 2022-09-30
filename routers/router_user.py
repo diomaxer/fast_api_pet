@@ -52,15 +52,14 @@ async def delete_user(user: User = Depends(get_current_user), session: Session =
     description='Top up your account',
     status_code=status.HTTP_200_OK,
 )
-async def top_up(user_sum: UserSum, user: User = Depends(get_current_user), session: Session = Depends(get_db)):
+async def top_up_money(user_sum: UserSum, user: User = Depends(get_current_user), session: Session = Depends(get_db)):
     return await UserManager.top_up(user_id=user.id, value=user_sum.value, session=session)
 
 
-
-# @router.get(
-#     path='/orders',
-#     description='Users orders',
-#     status_code=status.HTTP_200_OK
-# )
-# async def user_orders(user: User = Depends(get_current_user)):
-#     return await UserManager.user_orders(user_id=user.id)
+@router.get(
+    path='/orders',
+    description='User orders',
+    status_code=status.HTTP_200_OK
+)
+async def user_orders(user: User = Depends(get_current_user), session: Session = Depends(get_db)):
+    return await UserManager.user_orders(user_id=user.id, session=session)

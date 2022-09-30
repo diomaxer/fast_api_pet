@@ -50,6 +50,12 @@ class ProductManager:
         error = await ServiceProduct.create(product=product, session=session)
         if error:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Product title already exist")
+
     @staticmethod
-    async def buy(product_id: int, amount: int, user_id: int, session: Session):
-        await ServiceProduct.buy(product_id=product_id, amount=amount, user_id=user_id, session=session)
+    async def buy(product_id: int, amount: int, user: User, session: Session):
+        product = await ProductManager.get_one(product_id=product_id, session=session)
+        if product.amount < amount:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="so many out of stock")
+        if amount * product.price > user.sum:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="not enough money")
+        await ServiceProduct.buy(product=product, amount=amount, user_id=user.id, session=session)

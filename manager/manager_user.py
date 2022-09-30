@@ -1,5 +1,6 @@
+from pprint import pprint
+
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
 
 from hash_data import get_password_hash, verify_password
 from manager.manager_token import *
@@ -25,6 +26,7 @@ class UserManager:
 
     @staticmethod
     async def create_user(new_user: RegisterUser, session: Session):
+        new_user.password = get_password_hash(new_user.password)
         error = await UserService.create_user(new_user=new_user, session=session)
         if error:
             raise HTTPException(status_code=400, detail=f"{error} already taken")
@@ -42,7 +44,7 @@ class UserManager:
     async def top_up(user_id: int, value: float, session: Session):
         await UserService.top_up(user_id=user_id, value=value, session=session)
 
-    # @staticmethod
-    # async def user_orders(user_id: int):
-    #     orders = await UserService.get_user_orders(user_id=user_id)
-    #     return [Order(**elem) for elem in orders]
+    @staticmethod
+    async def user_orders(user_id: int, session: Session):
+        orders = await UserService.get_user_orders(user_id=user_id, session=session)
+        return [Order(**elem) for elem in orders]

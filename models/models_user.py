@@ -53,3 +53,4 @@ class Order(BaseModel):
     title: str
     price: int
     amount: int
+    date: datetime.datetime
