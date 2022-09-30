@@ -47,4 +47,6 @@ class UserManager:
     @staticmethod
     async def user_orders(user_id: int, session: Session):
         orders = await UserService.get_user_orders(user_id=user_id, session=session)
+        if not orders:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="You have no orders")
         return [Order(**elem) for elem in orders]
