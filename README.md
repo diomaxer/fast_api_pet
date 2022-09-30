@@ -23,4 +23,4 @@ After register you have 2000 (money) on account, so buy something
 
 Stack: FastAPI, sqlalchemy, alembic, pydantic
 
-link: https://agile-spire-54699.herokuapp.com/docs/
+Link on working project: https://agile-spire-54699.herokuapp.com/docs/
