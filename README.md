@@ -1,7 +1,6 @@
 Backend for small shop site on FastAPI
 
 Options:
-
     Auth:
       Register user
       Auth user
@@ -19,6 +18,8 @@ Options:
       Create product
       Update product
       Delete product
+      
+After register you have 2000 (money) on account, so buy something
 
 Stack: FastAPI, sqlalchemy, alembic, pydantic
 
